@@ -1,17 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 
 type PropsTypes = {
-    title:string
-    price:string
+    title: string
+    price: string
 }
 
-export const PizzaBlock = (props:PropsTypes) => {
+export const PizzaBlock = ({title, price}: PropsTypes) => {
+
+    const [count, setCount] = useState(0)
+
+    const onClickHandler = () => {
+        setCount(count + 1)
+    }
+
     return (
         <div className="pizza-block">
             <img className="pizza-block__image"
                  src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
                  alt="Pizza"/>
-            <h4 className="pizza-block__title">{props.title}</h4>
+            <h4 className="pizza-block__title">{title}</h4>
             <div className="pizza-block__selector">
                 <ul>
                     <li className="active">тонкое</li>
@@ -24,8 +31,8 @@ export const PizzaBlock = (props:PropsTypes) => {
                 </ul>
             </div>
             <div className="pizza-block__bottom">
-                <div className="pizza-block__price">от {props.price} ₽</div>
-                <div className="button button--outline button--add">
+                <div className="pizza-block__price">от {price} ₽</div>
+                <button onClick={onClickHandler} className="button button--outline button--add">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -33,8 +40,8 @@ export const PizzaBlock = (props:PropsTypes) => {
                             fill="white"></path>
                     </svg>
                     <span>Добавить</span>
-                    <i>2</i>
-                </div>
+                    <i>{count}</i>
+                </button>
             </div>
         </div>
     )
