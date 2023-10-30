@@ -1,38 +1,51 @@
-import React, {useState} from "react";
+import {useState} from "react";
 
 type PropsTypes = {
     title: string
-    price: string
+    price: number
+    imageUrl: string
+    sizes: number[],
+    types: number[]
 }
 
-export const PizzaBlock = ({title, price}: PropsTypes) => {
+export const PizzaBlock = ({title, price, imageUrl, sizes, types}: PropsTypes) => {
 
-    const [count, setCount] = useState(0)
+    const [activeType, setActiveType] = useState(0)
+    const [activeSize, setActiveSize] = useState(0)
 
-    const onClickHandler = () => {
-        setCount(count + 1)
-    }
+    const typeNames = ['тонкое', "традиционное"]
 
     return (
         <div className="pizza-block">
             <img className="pizza-block__image"
-                 src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+                 src={imageUrl}
                  alt="Pizza"/>
             <h4 className="pizza-block__title">{title}</h4>
             <div className="pizza-block__selector">
                 <ul>
-                    <li className="active">тонкое</li>
-                    <li>традиционное</li>
+                    {
+                        types.map((typeIndex) => {
+                            return (
+                                <li onClick={() => setActiveType(typeIndex)}
+                            className={activeType === typeIndex ? "active" : ''}>{typeNames[typeIndex]}</li>
+                            )
+                        })
+                    }
                 </ul>
                 <ul>
-                    <li className="active">26 см.</li>
-                    <li>30 см.</li>
-                    <li>40 см.</li>
+                    {
+                        sizes.map((size, index) => {
+                            return (
+                                <li onClick={() => setActiveSize(index)}
+                                    className={activeSize === index ? "active" : ''}>{size} см.</li>
+                            )
+                        })
+                    }
                 </ul>
             </div>
             <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {price} ₽</div>
-                <button onClick={onClickHandler} className="button button--outline button--add">
+                <button className="button button--outline button--add">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -40,7 +53,7 @@ export const PizzaBlock = ({title, price}: PropsTypes) => {
                             fill="white"></path>
                     </svg>
                     <span>Добавить</span>
-                    <i>{count}</i>
+                    <i>0</i>
                 </button>
             </div>
         </div>
