@@ -26,7 +26,7 @@ export const PizzaBlock = ({title, price, imageUrl, sizes, types}: PropsTypes) =
                     {
                         types.map((typeIndex) => {
                             return (
-                                <li onClick={() => setActiveType(typeIndex)}
+                                <li key={typeIndex} onClick={() => setActiveType(typeIndex)}
                             className={activeType === typeIndex ? "active" : ''}>{typeNames[typeIndex]}</li>
                             )
                         })
@@ -36,7 +36,7 @@ export const PizzaBlock = ({title, price, imageUrl, sizes, types}: PropsTypes) =
                     {
                         sizes.map((size, index) => {
                             return (
-                                <li onClick={() => setActiveSize(index)}
+                                <li key={size} onClick={() => setActiveSize(index)}
                                     className={activeSize === index ? "active" : ''}>{size} см.</li>
                             )
                         })
