@@ -2,15 +2,15 @@ import {Header} from "./components/Header";
 import './scss/app.scss'
 import {Home} from "./pages/Home";
 import {Route, Routes} from "react-router-dom";
-import React from "react";
+import React, {useState} from "react";
 import {NotFound} from "./pages/NotFound";
 import {Cart} from "./pages/Cart";
 
 function App() {
-
+const [searchValue, setSearchValue] = useState()
     return (
         <div className="wrapper">
-            <Header/>
+            <Header searchValue={searchValue} setSearchValue={setSearchValue}/>
             <div className="content">
                     <Routes>
                         <Route path={'/'} element={<Home/>}/>
