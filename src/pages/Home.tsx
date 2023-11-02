@@ -19,7 +19,7 @@ export type SortObjType = {
     name: string
     sortProperty: string
 }
-export const Home = () => {
+export const Home = ({searchValue}: any) => {
     const [items, setItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
@@ -29,17 +29,24 @@ export const Home = () => {
 
     useEffect(() => {
         setIsLoading(true)
-        const order = sortType.sortProperty.includes('-')?'asc':'desc'
-        const sortBy = sortType.sortProperty.replace('-','')
+        const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
+        const sortBy = sortType.sortProperty.replace('-', '')
         const category = categoryIndex > 0 ? `category=${categoryIndex}` : ''
-        fetch(`https://6540fd8045bedb25bfc3032e.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`)
+        const search = searchValue ? `&search=${searchValue}` : ''
+        fetch(`https://6540fd8045bedb25bfc3032e.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}${search}`)
             .then(res => res.json())
             .then(items => {
                 setItems(items)
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
-    }, [categoryIndex,sortType])
+    }, [categoryIndex, sortType, searchValue])
+
+    const pizzas = items
+        // .filter((pizza: PizzaType) => pizza.title.toLowerCase().includes(searchValue.toLowerCase()))
+        .map((pizza: PizzaType) => <PizzaBlock key={pizza.id} {...pizza}/>)
+    const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
+
     return (
         <div className={'container'}>
             <div className="content__top">
@@ -51,8 +58,8 @@ export const Home = () => {
 
                 {
                     isLoading
-                        ? [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
-                        : items.map((pizza: PizzaType) => <PizzaBlock key={pizza.id} {...pizza}/>)
+                        ? skeletons
+                        : pizzas
                 }
 
             </div>
