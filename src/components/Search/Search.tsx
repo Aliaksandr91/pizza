@@ -1,6 +1,15 @@
 import styles from './Search.module.scss'
+import {useContext} from "react";
+import {SearchContext, SearchContextType} from "../../App";
 
-export const Search = ({searchValue, setSearchValue}: any) => {
+export const Search = () => {
+
+    const context = useContext(SearchContext);
+    if (context === undefined) {
+        throw new Error("useSearch must be used within a SearchProvider");
+    }
+    const { searchValue, setSearchValue } = context as SearchContextType;
+
     return (
         <div className={styles.root}>
             <svg className={styles.icon} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title/>

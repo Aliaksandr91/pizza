@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Categories} from "../components/Categories";
 import {Sort} from "../components/Sort";
 import {Skeleton} from "../components/PizzaBlock/Skeleton";
 import {PizzaBlock} from "../components/PizzaBlock/PizzaBlock";
 import {Pagination} from "../components/Pagination/Pagination";
+import {SearchContext, SearchContextType} from "../App";
 
 type PizzaType = {
     "id": number
@@ -20,7 +21,14 @@ export type SortObjType = {
     name: string
     sortProperty: string
 }
-export const Home = ({searchValue}: any) => {
+export const Home = () => {
+
+    const context = useContext(SearchContext);
+    if (context === undefined) {
+        throw new Error("useSearch must be used within a SearchProvider");
+    }
+    const { searchValue } = context as SearchContextType;
+
     const [items, setItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
