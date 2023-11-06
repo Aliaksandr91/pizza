@@ -7,7 +7,8 @@ import {Pagination} from "../components/Pagination/Pagination";
 import {SearchContext, SearchContextType} from "../App";
 import {useSelector, useDispatch} from 'react-redux'
 import {RootStateType} from "../redux/store";
-import {setCategoryIndex} from "../redux/slices/filterSlice";
+import {setCategoryIndex, setCurrentPage} from "../redux/slices/filterSlice";
+import axios from "axios";
 
 
 type PizzaType = {
@@ -28,14 +29,17 @@ export type SortObjType = {
 
 
 export const Home = () => {
-    const {categoryIndex,sort} = useSelector((state: RootStateType) => state.filter)
+    const {categoryIndex, sort, currentPage} = useSelector((state: RootStateType) => state.filter)
     const sortType = sort.sortProperty
     const dispatch = useDispatch()
-    
-    const onChangeCategory = (index:number)=> {
+
+    const onChangeCategory = (index: number) => {
         dispatch(setCategoryIndex(index))
     }
 
+    const onChangePage = (pageNumber:number) => {
+        dispatch(setCurrentPage(pageNumber))
+    }
 
     const context = useContext(SearchContext);
     if (context === undefined) {
@@ -46,7 +50,6 @@ export const Home = () => {
     const [items, setItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
-    const [currentPage, setCurrentPage] = useState(1)
 
     useEffect(() => {
         setIsLoading(true)
@@ -54,10 +57,10 @@ export const Home = () => {
         const sortBy = sortType.replace('-', '')
         const category = categoryIndex > 0 ? `category=${categoryIndex}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
-        fetch(`https://6540fd8045bedb25bfc3032e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-            .then(res => res.json())
-            .then(items => {
-                setItems(items)
+
+        axios.get(`https://6540fd8045bedb25bfc3032e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+            .then(res => {
+                setItems(res.data)
                 setIsLoading(false)
             })
         window.scrollTo(0, 0)
@@ -80,7 +83,7 @@ export const Home = () => {
                         : pizzas
                 }
             </div>
-            <Pagination onChangePage={(number: number) => setCurrentPage(number)}/>
+            <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
         </div>
     )
 }

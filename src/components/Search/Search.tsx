@@ -1,14 +1,38 @@
 import styles from './Search.module.scss'
-import {useContext} from "react";
+import React, {ChangeEvent, useCallback, useContext, useState} from "react";
 import {SearchContext, SearchContextType} from "../../App";
-
+import { debounce } from "lodash";
 export const Search = () => {
+
+    const [value, setValue] = useState('')
+
 
     const context = useContext(SearchContext);
     if (context === undefined) {
         throw new Error("useSearch must be used within a SearchProvider");
     }
-    const { searchValue, setSearchValue } = context as SearchContextType;
+    const {  setSearchValue } = context as SearchContextType;
+
+
+    const inputRef = React.useRef<HTMLInputElement | null>(null)
+
+    const onClickClear = ()=> {
+        setSearchValue('')
+        setValue('')
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }
+
+    const updateSearchValue = useCallback(
+        debounce((str:string)=>{
+            setSearchValue(str)
+        },1000),[]
+    )
+    const onChangeInput = (event:ChangeEvent<HTMLInputElement>)=> {
+        setValue(event.currentTarget.value)
+        updateSearchValue(event.currentTarget.value)
+    }
 
     return (
         <div className={styles.root}>
@@ -19,15 +43,14 @@ export const Search = () => {
                 </g>
             </svg>
             <input
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.currentTarget.value)}
+                ref={inputRef}
+                value={value}
+                onChange={onChangeInput}
                 className={styles.input}
                 placeholder={'Поиск пиццы...'}
             />
-            {searchValue &&
-                <svg onClick={() => {
-                    setSearchValue('')
-                }} className={styles.ClearIcon} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            {value &&
+                <svg onClick={onClickClear} className={styles.ClearIcon} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"/>
                 </svg>
