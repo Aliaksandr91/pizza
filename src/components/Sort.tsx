@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "../redux/store";
 import {setSort} from "../redux/slices/filterSlice";
 
-const sortArr = [
+export const sortArr = [
     {name: 'популярности (DESC)', sortProperty: 'rating'},
     {name: 'популярности (ASC)', sortProperty: '-rating'},
     {name: 'цене (DESC)', sortProperty: 'price'},

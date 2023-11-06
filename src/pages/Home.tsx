@@ -1,14 +1,16 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {Categories} from "../components/Categories";
-import {Sort} from "../components/Sort";
+import {Sort, sortArr} from "../components/Sort";
 import {Skeleton} from "../components/PizzaBlock/Skeleton";
 import {PizzaBlock} from "../components/PizzaBlock/PizzaBlock";
 import {Pagination} from "../components/Pagination/Pagination";
 import {SearchContext, SearchContextType} from "../App";
 import {useSelector, useDispatch} from 'react-redux'
 import {RootStateType} from "../redux/store";
-import {setCategoryIndex, setCurrentPage} from "../redux/slices/filterSlice";
+import {setCategoryIndex, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import axios from "axios";
+import qs from 'qs'
+import {useNavigate} from "react-router-dom";
 
 
 type PizzaType = {
@@ -32,26 +34,18 @@ export const Home = () => {
     const {categoryIndex, sort, currentPage} = useSelector((state: RootStateType) => state.filter)
     const sortType = sort.sortProperty
     const dispatch = useDispatch()
-
+    const isSearch = useRef(false)
+    const isMounted = useRef(false)
+    const navigate = useNavigate()
     const onChangeCategory = (index: number) => {
         dispatch(setCategoryIndex(index))
     }
 
-    const onChangePage = (pageNumber:number) => {
+    const onChangePage = (pageNumber: number) => {
         dispatch(setCurrentPage(pageNumber))
     }
 
-    const context = useContext(SearchContext);
-    if (context === undefined) {
-        throw new Error("useSearch must be used within a SearchProvider");
-    }
-    const {searchValue} = context as SearchContextType;
-
-    const [items, setItems] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-
-
-    useEffect(() => {
+    const fetchPizzas = () => {
         setIsLoading(true)
         const order = sortType.includes('-') ? 'asc' : 'desc'
         const sortBy = sortType.replace('-', '')
@@ -63,8 +57,52 @@ export const Home = () => {
                 setItems(res.data)
                 setIsLoading(false)
             })
+    }
+
+    const context = useContext(SearchContext);
+    if (context === undefined) {
+        throw new Error("useSearch must be used within a SearchProvider");
+    }
+    const {searchValue} = context as SearchContextType;
+
+    const [items, setItems] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        if (isMounted.current) {
+            const queryString = qs.stringify({
+                sortProperty: sortType,
+                categoryIndex,
+                currentPage
+            })
+            navigate(`?${queryString}`)
+        }
+        isMounted.current = true
+    }, [categoryIndex, sortType, currentPage]);
+    
+    useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1))
+            const sort = sortArr.find(obj => obj.sortProperty === params.sortProperty)
+            dispatch(setFilters({
+                ...params,
+                sort
+            }))
+            isSearch.current = true
+        }
+    }, []);
+
+
+    useEffect(() => {
         window.scrollTo(0, 0)
+        if (!isSearch.current) {
+            fetchPizzas()
+        }
+        isSearch.current = false
     }, [categoryIndex, sortType, searchValue, currentPage])
+
+
+
 
     const pizzas = items
         .map((pizza: PizzaType) => <PizzaBlock key={pizza.id} {...pizza}/>)
