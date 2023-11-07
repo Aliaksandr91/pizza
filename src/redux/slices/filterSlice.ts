@@ -2,13 +2,13 @@ import {createSlice} from '@reduxjs/toolkit'
 import type {PayloadAction} from '@reduxjs/toolkit'
 import {SortObjType} from "../../pages/Home";
 
-export interface CounterState {
+export type FilterState ={
     currentPage: number
     categoryIndex: number
     sort: SortObjType
 }
 
-const initialState: CounterState = {
+const initialState: FilterState = {
     currentPage: 1,
     categoryIndex: 0,
     sort: {name: 'популярности', sortProperty: 'rating'}
