@@ -6,23 +6,10 @@ import {PizzaBlock} from "../components/PizzaBlock/PizzaBlock";
 import {Pagination} from "../components/Pagination/Pagination";
 import {SearchContext, SearchContextType} from "../App";
 import {useSelector, useDispatch} from 'react-redux'
-import {RootStateType} from "../redux/store";
-import {setCategoryIndex, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
+import {selectFilter, setCategoryIndex, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import qs from 'qs'
 import {useNavigate} from "react-router-dom";
-import {fetchPizzas} from "../redux/slices/pizzaSlice";
-
-
-type PizzaType = {
-    id: string
-    imageUrl: string
-    title: string
-    types: number[]
-    sizes: number[]
-    price: number
-    category: number
-    rating: number
-}
+import {fetchPizzas, selectPizzaData} from "../redux/slices/pizzaSlice";
 
 export type SortObjType = {
     name: string
@@ -31,19 +18,13 @@ export type SortObjType = {
 
 
 export const Home = () => {
-    const {categoryIndex, sort, currentPage} = useSelector((state: RootStateType) => state.filter)
-    const {items, status} = useSelector((state: RootStateType) => state.pizza)
+    const {categoryIndex, sort, currentPage, searchValue} = useSelector(selectFilter)
+    const {items, status} = useSelector(selectPizzaData)
     const sortType = sort.sortProperty
     const dispatch = useDispatch()
     const isSearch = useRef(false)
     const isMounted = useRef(false)
     const navigate = useNavigate()
-    const context = useContext(SearchContext);
-    if (context === undefined) {
-        throw new Error("useSearch must be used within a SearchProvider");
-    }
-    const {searchValue} = context as SearchContextType;
-
 
     const onChangeCategory = (index: number) => {
         dispatch(setCategoryIndex(index))
@@ -58,15 +39,15 @@ export const Home = () => {
         const order = sortType.includes('-') ? 'asc' : 'desc'
         const category = categoryIndex > 0 ? `category=${String(categoryIndex)}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
-        dispatch(
-            fetchPizzas({
-                sortBy,
-                order,
-                category,
-                search,
-                currentPage: String(currentPage),
-            }),
-        );
+
+
+        // dispatch(fetchPizzas({
+        //     order,
+        //     sortBy,
+        //     category,
+        //     search,
+        //     currentPage
+        // }));
         window.scrollTo(0, 0);
     }
 

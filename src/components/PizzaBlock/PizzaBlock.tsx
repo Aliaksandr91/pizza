@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addItem, ItemType} from "../../redux/slices/cartSlice";
-import {RootStateType} from "../../redux/store";
+import {addItem, ItemType, selectCartItemById} from "../../redux/slices/cartSlice";
 
 type PropsTypes = {
     id: string
@@ -17,7 +16,7 @@ const typeNames = ['тонкое', "традиционное"]
 
 export const PizzaBlock = ({id, title, price, imageUrl, sizes, types}: PropsTypes) => {
     const dispatch = useDispatch()
-    const cartItem = useSelector((state:RootStateType) => state.cart.items.find(obj => obj.id))
+    const cartItem = useSelector(selectCartItemById(id))
     const [activeType, setActiveType] = useState(0)
     const [activeSize, setActiveSize] = useState(0)
 

@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import type {PayloadAction} from '@reduxjs/toolkit'
 import axios from "axios";
+import {RootStateType} from "../store";
 
 export type ItemType = {
     id: string;
@@ -22,7 +23,7 @@ const initialState: CartState = {
 }
 export const fetchPizzas = createAsyncThunk(
     'pizza/fetchPizzasStatus',
-    async (params) => {
+    async (params: { order: string, sortBy: string, category: string, search: string, currentPage: number }) => {
         const {order, sortBy, category, search, currentPage} = params
         const {data} = await axios.get(`https://6540fd8045bedb25bfc3032e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
         return data
@@ -55,7 +56,7 @@ const pizzaSlice = createSlice({
     },
 });
 
-
+export const selectPizzaData = (state: RootStateType) => state.pizza
 export const {
     setItems
 } = pizzaSlice.actions

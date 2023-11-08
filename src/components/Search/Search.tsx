@@ -1,23 +1,17 @@
 import styles from './Search.module.scss'
 import React, {ChangeEvent, useCallback, useContext, useState} from "react";
-import {SearchContext, SearchContextType} from "../../App";
-import { debounce } from "lodash";
+import {debounce} from "lodash";
+import {useDispatch} from "react-redux";
+import {setSearchValue} from "../../redux/slices/filterSlice";
+
 export const Search = () => {
 
     const [value, setValue] = useState('')
-
-
-    const context = useContext(SearchContext);
-    if (context === undefined) {
-        throw new Error("useSearch must be used within a SearchProvider");
-    }
-    const {  setSearchValue } = context as SearchContextType;
-
-
     const inputRef = React.useRef<HTMLInputElement | null>(null)
+    const dispatch = useDispatch()
 
-    const onClickClear = ()=> {
-        setSearchValue('')
+    const onClickClear = () => {
+        dispatch(setSearchValue(''))
         setValue('')
         if (inputRef.current) {
             inputRef.current.focus();
@@ -25,11 +19,11 @@ export const Search = () => {
     }
 
     const updateSearchValue = useCallback(
-        debounce((str:string)=>{
-            setSearchValue(str)
-        },1000),[]
+        debounce((str: string) => {
+            dispatch(setSearchValue(str))
+        }, 1000), []
     )
-    const onChangeInput = (event:ChangeEvent<HTMLInputElement>)=> {
+    const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.currentTarget.value)
         updateSearchValue(event.currentTarget.value)
     }
@@ -50,7 +44,8 @@ export const Search = () => {
                 placeholder={'Поиск пиццы...'}
             />
             {value &&
-                <svg onClick={onClickClear} className={styles.ClearIcon} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg onClick={onClickClear} className={styles.ClearIcon} viewBox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"/>
                 </svg>
