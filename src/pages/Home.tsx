@@ -45,18 +45,23 @@ export const Home = () => {
         dispatch(setCurrentPage(pageNumber))
     }
 
-    const fetchPizzas = () => {
+    const fetchPizzas = async () => {
         setIsLoading(true)
         const order = sortType.includes('-') ? 'asc' : 'desc'
         const sortBy = sortType.replace('-', '')
         const category = categoryIndex > 0 ? `category=${categoryIndex}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
+        
+        try {
+            const res = await axios.get(`https://6540fd8045bedb25bfc3032e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+            setItems(res.data)
+        }
+        catch (error){
+            console.log(error)
+        } finally {
+            setIsLoading(false)
+        }
 
-        axios.get(`https://6540fd8045bedb25bfc3032e.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
-            .then(res => {
-                setItems(res.data)
-                setIsLoading(false)
-            })
     }
 
     const context = useContext(SearchContext);
@@ -79,7 +84,7 @@ export const Home = () => {
         }
         isMounted.current = true
     }, [categoryIndex, sortType, currentPage]);
-    
+
     useEffect(() => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1))
@@ -100,8 +105,6 @@ export const Home = () => {
         }
         isSearch.current = false
     }, [categoryIndex, sortType, searchValue, currentPage])
-
-
 
 
     const pizzas = items
