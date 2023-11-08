@@ -3,9 +3,13 @@ import {useDispatch} from "react-redux";
 
 export const CartItem = ({id, size, title, type, price, count, imageUrl}:ItemType) => {
     const dispatch = useDispatch()
-    const onClickPlus = ()=> {
-        dispatch(addItem({id}))
-    }
+    const onClickPlus = () => {
+        dispatch(
+            addItem({
+                id,
+            } as ItemType),
+        );
+    };
     const onClickMinus = ()=> {
         dispatch(minusItem(id))
     }

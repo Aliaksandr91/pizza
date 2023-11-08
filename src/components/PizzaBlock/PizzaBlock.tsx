@@ -1,10 +1,10 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addItem} from "../../redux/slices/cartSlice";
+import {addItem, ItemType} from "../../redux/slices/cartSlice";
 import {RootStateType} from "../../redux/store";
 
 type PropsTypes = {
-    id: number
+    id: string
     title: string
     price: number
     imageUrl: string
@@ -23,14 +23,15 @@ export const PizzaBlock = ({id, title, price, imageUrl, sizes, types}: PropsType
 
 const addedCount = cartItem ? cartItem.count : 0
     const onClickAddItem = () => {
-        const item = {
+        const item: ItemType = {
             id,
             title,
             price,
             imageUrl,
             type: typeNames[activeType],
-            size: sizes[activeSize]
-        }
+            size: sizes[activeSize],
+            count: 0,
+        };
         dispatch(addItem(item));
     }
 
