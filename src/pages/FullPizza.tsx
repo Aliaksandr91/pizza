@@ -1,10 +1,11 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
 
 export const FullPizza = () => {
     const {id} = useParams()
+    const navigate = useNavigate()
     const [pizza, setPizza] = useState<{
         imageUrl: string;
         title: string;
@@ -19,6 +20,7 @@ export const FullPizza = () => {
                 setPizza(data)
             } catch (error) {
                 console.log(error)
+                navigate('/')
             }
         }
 
