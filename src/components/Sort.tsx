@@ -3,7 +3,12 @@ import {SortObjType} from "../pages/Home";
 import {useDispatch, useSelector} from "react-redux";
 import {selectSort, setSort} from "../redux/slices/filterSlice";
 
-export const sortArr = [
+type SortItem = {
+    name: string
+    sortProperty: string
+}
+
+export const sortArr: SortItem[] = [
     {name: 'популярности (DESC)', sortProperty: 'rating'},
     {name: 'популярности (ASC)', sortProperty: '-rating'},
     {name: 'цене (DESC)', sortProperty: 'price'},
@@ -12,7 +17,7 @@ export const sortArr = [
     {name: 'алфавиту (ASC)', sortProperty: '-title'}
 ]
 
-export const Sort = () => {
+export const Sort: React.FC = () => {
     const [isVisible, setIsVisible] = useState(false)
     const sort = useSelector(selectSort)
     const dispatch = useDispatch()

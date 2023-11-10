@@ -1,9 +1,9 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 
-export const FullPizza = () => {
+export const FullPizza:React.FC = () => {
     const {id} = useParams()
     const navigate = useNavigate()
     const [pizza, setPizza] = useState<{
@@ -11,8 +11,8 @@ export const FullPizza = () => {
         title: string;
         price: number;
     }>();
-    useEffect(() => {
 
+    useEffect(() => {
         async function fetchPizza() {
             try {
                 const {data} = await axios.get('https://6540fd8045bedb25bfc3032e.mockapi.io/items/' + id)
