@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import {SortObjType} from "../pages/Home";
 import {useDispatch, useSelector} from "react-redux";
 import {selectSort, setSort} from "../redux/slices/filterSlice";
 
@@ -22,7 +21,7 @@ export const Sort: React.FC = () => {
     const sort = useSelector(selectSort)
     const dispatch = useDispatch()
     const sortRef = useRef<HTMLDivElement | null>(null)
-    const onClickListItem = (objItem: SortObjType) => {
+    const onClickListItem = (objItem: SortItem) => {
         dispatch(setSort(objItem))
         setIsVisible(false)
     }

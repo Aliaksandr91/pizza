@@ -1,4 +1,10 @@
-export const Categories = ({value, onChangeCategory}:any) => {
+import React from "react";
+
+type CategoriesPropsTypes = {
+    value: number
+    onChangeCategory: (i: number) => void
+}
+export const Categories: React.FC<CategoriesPropsTypes> = ({value, onChangeCategory}) => {
 
     const categories = [
         'Все',

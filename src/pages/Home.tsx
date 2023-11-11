@@ -16,7 +16,7 @@ export type SortObjType = {
 }
 
 
-export const Home = () => {
+export const Home: React.FC = () => {
     const {categoryIndex, sort, currentPage, searchValue} = useSelector(selectFilter)
     const {items, status} = useSelector(selectPizzaData)
     const sortType = sort.sortProperty
@@ -39,14 +39,14 @@ export const Home = () => {
         const category = categoryIndex > 0 ? `category=${String(categoryIndex)}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
 
-
-        // dispatch(fetchPizzas({
-        //     order,
-        //     sortBy,
-        //     category,
-        //     search,
-        //     currentPage
-        // }));
+//@ts-ignore
+        dispatch(fetchPizzas({
+            order,
+            sortBy,
+            category,
+            search,
+            currentPage
+        }));
         window.scrollTo(0, 0);
     }
 
@@ -86,7 +86,7 @@ export const Home = () => {
 
 
     const pizzas = items
-        .map((pizza: any) => <Link key={pizza.id} to={`/pizza/${pizza.id}`}><PizzaBlock  {...pizza}/></Link>)
+        .map((pizza: any) => <PizzaBlock  {...pizza}/>)
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
     return (
         <div className={'container'}>
