@@ -1,7 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import filter from './slices/filterSlice'
 import cart from './slices/cartSlice'
 import pizza from './slices/pizzaSlice'
+import {useDispatch} from "react-redux";
+
 export const store = configureStore({
     reducer: {
         filter,
@@ -10,7 +12,7 @@ export const store = configureStore({
     },
 })
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootStateType = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatchType = typeof store.dispatch
+
+type AppDispatchType = typeof store.dispatch
+export const useAppDispatch = () => useDispatch<AppDispatchType>()

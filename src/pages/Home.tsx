@@ -1,26 +1,22 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Categories} from "../components/Categories";
 import {Sort, sortArr} from "../components/Sort";
 import {Skeleton} from "../components/PizzaBlock/Skeleton";
 import {PizzaBlock} from "../components/PizzaBlock/PizzaBlock";
 import {Pagination} from "../components/Pagination/Pagination";
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 import {selectFilter, setCategoryIndex, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import qs from 'qs'
 import {useNavigate} from "react-router-dom";
 import {fetchPizzas, selectPizzaData} from "../redux/slices/pizzaSlice";
-
-export type SortObjType = {
-    name: string
-    sortProperty: string
-}
+import {useAppDispatch} from "../redux/store";
 
 
 export const Home: React.FC = () => {
     const {categoryIndex, sort, currentPage, searchValue} = useSelector(selectFilter)
     const {items, status} = useSelector(selectPizzaData)
     const sortType = sort.sortProperty
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isSearch = useRef(false)
     const isMounted = useRef(false)
     const navigate = useNavigate()
@@ -39,7 +35,6 @@ export const Home: React.FC = () => {
         const category = categoryIndex > 0 ? `category=${String(categoryIndex)}` : ''
         const search = searchValue ? `&search=${searchValue}` : ''
 
-//@ts-ignore
         dispatch(fetchPizzas({
             order,
             sortBy,
@@ -67,9 +62,12 @@ export const Home: React.FC = () => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1))
             const sort = sortArr.find(obj => obj.sortProperty === params.sortProperty)
+            if (sort) params.sort = sort
             dispatch(setFilters({
-                ...params,
-                sort
+                searchValue: '',
+                sort: sort || sortArr[0],
+                categoryIndex: Number(params.categoryIndex),
+                currentPage: Number(params.currentPage),
             }))
             isSearch.current = true
         }
