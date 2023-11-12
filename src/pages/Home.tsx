@@ -7,7 +7,7 @@ import {Pagination} from "../components/Pagination/Pagination";
 import {useSelector, useDispatch} from 'react-redux'
 import {selectFilter, setCategoryIndex, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 import qs from 'qs'
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {fetchPizzas, selectPizzaData} from "../redux/slices/pizzaSlice";
 
 export type SortObjType = {
