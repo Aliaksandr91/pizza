@@ -1,8 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {selectSort, setSort, SortType} from "../redux/slices/filterSlice";
-
-
+import {useDispatch} from "react-redux";
+import {setSort, SortType} from "../redux/slices/filterSlice";
 
 export const sortArr:SortType[] = [
     {name: 'популярности (DESC)', sortProperty: 'rating'},
@@ -13,9 +11,12 @@ export const sortArr:SortType[] = [
     {name: 'алфавиту (ASC)', sortProperty: '-title'}
 ]
 
-export const Sort: React.FC = () => {
+type SortPropsType = {
+    value:SortType
+}
+
+export const Sort: React.FC<SortPropsType> = React.memo(({value}) => {
     const [isVisible, setIsVisible] = useState(false)
-    const sort = useSelector(selectSort)
     const dispatch = useDispatch()
     const sortRef = useRef<HTMLDivElement | null>(null)
     const onClickListItem = (objItem: SortType) => {
@@ -43,7 +44,7 @@ export const Sort: React.FC = () => {
                         fill="#2C2C2C"></path>
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setIsVisible(!isVisible)}>{sort.name}</span>
+                <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
             </div>
             {
                 isVisible && <div className="sort__popup">
@@ -51,7 +52,7 @@ export const Sort: React.FC = () => {
                         {
                             sortArr.map((item, index) => {
                                 return <li key={index} onClick={() => onClickListItem(item)}
-                                           className={sort.sortProperty === item.sortProperty ? "active" : ''}>{item.name}</li>
+                                           className={value.sortProperty === item.sortProperty ? "active" : ''}>{item.name}</li>
                             })
                         }
                     </ul>
@@ -59,4 +60,4 @@ export const Sort: React.FC = () => {
             }
         </div>
     )
-}
+})

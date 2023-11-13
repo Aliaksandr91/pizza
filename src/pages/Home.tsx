@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Categories} from "../components/Categories";
 import {Sort, sortArr} from "../components/Sort";
 import {Skeleton} from "../components/PizzaBlock/Skeleton";
@@ -21,9 +21,9 @@ export const Home: React.FC = () => {
     const isMounted = useRef(false)
     const navigate = useNavigate()
 
-    const onChangeCategory = (index: number) => {
+    const onChangeCategory = useCallback((index: number) => {
         dispatch(setCategoryIndex(index))
-    }
+    }, [])
 
     const onChangePage = (pageNumber: number) => {
         dispatch(setCurrentPage(pageNumber))
@@ -84,13 +84,13 @@ export const Home: React.FC = () => {
 
 
     const pizzas = items
-        .map((pizza: any) => <PizzaBlock  {...pizza}/>)
+        .map((pizza: any) => <PizzaBlock key={pizza.id} {...pizza}/>)
     const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
     return (
         <div className={'container'}>
             <div className="content__top">
                 <Categories value={categoryIndex} onChangeCategory={onChangeCategory}/>
-                <Sort/>
+                <Sort value={sort}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             {status === 'error' ? (

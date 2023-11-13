@@ -1,4 +1,5 @@
 import React from "react";
+import { useWhyDidYouUpdate } from 'ahooks';
 
 type CategoriesPropsTypes = {
     value: number
@@ -12,7 +13,7 @@ const categories = [
     'Острые',
     'Закрытые'
 ]
-export const Categories: React.FC<CategoriesPropsTypes> = ({value, onChangeCategory}) => {
+export const Categories: React.FC<CategoriesPropsTypes> = React.memo(({value, onChangeCategory}) => {
     return (
         <div className="categories">
             <ul>
@@ -25,4 +26,4 @@ export const Categories: React.FC<CategoriesPropsTypes> = ({value, onChangeCateg
             </ul>
         </div>
     )
-}
+})
