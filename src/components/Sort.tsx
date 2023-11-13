@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch} from "react-redux";
-import {setSort, SortType} from "../redux/slices/filterSlice";
+import {SortType} from "../redux/filter/types";
+import {setSort} from "../redux/filter/slice";
+
 
 export const sortArr:SortType[] = [
     {name: 'популярности (DESC)', sortProperty: 'rating'},
