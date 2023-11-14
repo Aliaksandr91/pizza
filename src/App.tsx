@@ -7,11 +7,11 @@ import React from "react";
 //import {FullPizza} from "./pages/FullPizza";
 import {MainLayout} from "./layoouts/MainLayout";
 
-const Cart = React.lazy(() => import("./pages/Cart")
+const Cart = React.lazy(() => import(/*webpackChunkName: "Cart" */ "./pages/Cart")
     .then(module => ({default: module.Cart})));
-const NotFound = React.lazy(() => import("./pages/NotFound")
+const NotFound = React.lazy(() => import(/*webpackChunkName: "NotFound" */ "./pages/NotFound")
     .then(module => ({default: module.NotFound})));
-const FullPizza = React.lazy(() => import("./pages/FullPizza")
+const FullPizza = React.lazy(() => import(/*webpackChunkName: "FullPizza" */ "./pages/FullPizza")
     .then(module => ({default: module.FullPizza})));
 
 function App() {
