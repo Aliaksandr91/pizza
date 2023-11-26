@@ -88,14 +88,14 @@ export const Home: React.FC = () => {
 
     const pizzas = items
         .map((pizza: any) => <PizzaBlock key={pizza.id} {...pizza}/>)
-    const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index}/>)
+    const skeletons = [...new Array(4)].map((_, index) => <Skeleton key={index}/>)
     return (
         <div className={'container'}>
             <div className="content__top">
                 <Categories value={categoryIndex} onChangeCategory={onChangeCategory}/>
                 <Sort value={sort}/>
             </div>
-            <h2 className="content__title">Все пиццы</h2>
+            <h2 className="content__title">All pizzas</h2>
             {status === 'error' ? (
                 <div className="content__error-info">
                     <h2>Произошла ошибка 😕</h2>

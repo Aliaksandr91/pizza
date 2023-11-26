@@ -5,7 +5,7 @@ const initialState: FilterStateType = {
     searchValue: '',
     currentPage: 1,
     categoryIndex: 0,
-    sort: {name: 'популярности (DESC)', sortProperty: 'rating'}
+    sort: {name: 'popularity (DESC)', sortProperty: 'rating'}
 }
 
 export const filterSlice = createSlice({

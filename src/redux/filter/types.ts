@@ -6,12 +6,12 @@ export type FilterStateType = {
 }
 
 export type SortType ={
-    name: 'популярности (DESC)'
-        | 'популярности (ASC)'
-        | 'цене (DESC)'
-        | 'цене  (ASC)'
-        | 'алфавиту (DESC)'
-        | 'алфавиту (ASC)'
+    name: 'popularity (DESC)'
+        | 'popularity (ASC)'
+        | 'price (DESC)'
+        | 'price  (ASC)'
+        | 'alphabet (DESC)'
+        | 'alphabet (ASC)'
     sortProperty: 'rating'
         | '-rating'
         | 'price'

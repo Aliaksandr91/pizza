@@ -2,9 +2,6 @@ import './scss/app.scss'
 import {Home} from "./pages/Home";
 import {Route, Routes} from "react-router-dom";
 import React from "react";
-//import {NotFound} from "./pages/NotFound";
-//import {Cart} from "./pages/Cart";
-//import {FullPizza} from "./pages/FullPizza";
 import {MainLayout} from "./layoouts/MainLayout";
 
 const Cart = React.lazy(() => import(/*webpackChunkName: "Cart" */ "./pages/Cart")
@@ -16,7 +13,6 @@ const FullPizza = React.lazy(() => import(/*webpackChunkName: "FullPizza" */ "./
 
 function App() {
     return (
-
         <Routes>
             <Route path={'/'} element={<MainLayout/>}>
                 <Route path={''} element={<Home/>}/>
@@ -36,9 +32,7 @@ function App() {
                     </React.Suspense>
                 }/>
             </Route>
-
         </Routes>
-
     );
 }
 
