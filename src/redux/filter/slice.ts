@@ -5,7 +5,8 @@ const initialState: FilterStateType = {
     searchValue: '',
     currentPage: 1,
     categoryIndex: 0,
-    sort: {name: 'popularity (DESC)', sortProperty: 'rating'}
+    sort: {name: 'popularity (DESC)', sortProperty: 'rating'},
+
 }
 
 export const filterSlice = createSlice({
@@ -28,6 +29,7 @@ export const filterSlice = createSlice({
             state.currentPage = Number(action.payload.currentPage)
             state.sort = action.payload.sort ?? initialState.sort
             state.categoryIndex = Number(action.payload.categoryIndex)
+            console.log(action.payload)
         },
 
     },

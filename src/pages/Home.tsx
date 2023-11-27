@@ -23,7 +23,6 @@ export const Home: React.FC = () => {
     const isSearch = useRef(false)
     const isMounted = useRef(false)
     const navigate = useNavigate()
-
     const onChangeCategory = useCallback((index: number) => {
         dispatch(setCategoryIndex(index))
     }, [])
@@ -104,7 +103,7 @@ export const Home: React.FC = () => {
             ) : (
                 <div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
             )}
-            <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
+            <Pagination currentPage={currentPage} onChangePage={onChangePage} />
         </div>
     )
 }
